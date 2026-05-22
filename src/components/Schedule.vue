@@ -54,31 +54,20 @@
 								:style="{ top: `${slot.topPx}px` }"
 							/>
 
-							<div
+							<EventCard
 								v-for="{ positioned, raw } in positionedEvents"
-								class="event-slot"
 								:key="positioned.id"
-								:class="{ hovered: hoveredEventId === positioned.id }"
-								:style="{
-									top: `${positioned.topPercent}%`,
-									height: `${positioned.heightPercent}%`,
-									left: `calc(${positioned.leftPercent}% + ${positioned.offsetPx}px)`,
-									width: `calc(${positioned.widthPercent}% - ${positioned.offsetPx}px)`,
-									zIndex: hoveredEventId === positioned.id ? 100 : positioned.zIndex,
-								}"
+								:type="raw.type"
+								:order="raw.order"
+								:reservation="raw.reservation"
+								:table="table"
+								:start-date="positioned.startDate"
+								:end-date="positioned.endDate"
+								:is-hovered="hoveredEventId === positioned.id"
+								:style="getEventCardStyle(positioned, hoveredEventId === positioned.id)"
 								@mouseenter="hoveredEventId = positioned.id"
 								@mouseleave="hoveredEventId = null"
-							>
-								<EventCard
-									:type="raw.type"
-									:order="raw.order"
-									:reservation="raw.reservation"
-									:table="table"
-									:start-date="positioned.startDate"
-									:end-date="positioned.endDate"
-									:is-hovered="hoveredEventId === positioned.id"
-								/>
-							</div>
+							/>
 						</div>
 
 						<div
@@ -96,7 +85,7 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
 import type { Table } from '@/shared/types/entities'
-import type { ScheduleColumn, TimeSlot } from '@/shared/types/schedule'
+import type { PositionedEvent, ScheduleColumn, TimeSlot } from '@/shared/types/schedule'
 import { useDragScroll } from '@/composables/useDragScroll'
 import { COLUMN_WIDTH, TIME_COL_WIDTH } from '@/constants/schedule'
 import EventCard from '@/components/EventCard.vue'
@@ -110,6 +99,30 @@ defineProps<{
 }>()
 
 const hoveredEventId = ref<string | null>(null)
+
+function getEventCardStyle(positioned: PositionedEvent, isHovered: boolean) {
+	const slotWidth = `calc(${positioned.widthPercent}% - ${positioned.offsetPx}px)`
+
+	if (isHovered) {
+		return {
+			top: `${positioned.topPercent}%`,
+			left: `calc(${positioned.leftPercent}% + ${positioned.offsetPx}px)`,
+			width: 'max-content',
+			minWidth: slotWidth,
+			height: 'auto',
+			minHeight: `${positioned.heightPercent}%`,
+			zIndex: 100,
+		}
+	}
+
+	return {
+		top: `${positioned.topPercent}%`,
+		height: `${positioned.heightPercent}%`,
+		left: `calc(${positioned.leftPercent}% + ${positioned.offsetPx}px)`,
+		width: slotWidth,
+		zIndex: positioned.zIndex,
+	}
+}
 
 const scheduleScrollRef = useTemplateRef<HTMLElement>('scheduleScrollRef')
 const {
@@ -258,16 +271,6 @@ const {
 		height: 1px;
 		background: var(--color-grid-line);
 		pointer-events: none;
-	}
-
-	.event-slot {
-		position: absolute;
-		overflow: hidden;
-
-		&.hovered {
-			overflow: visible;
-			z-index: 100;
-		}
 	}
 
 	.now-line {

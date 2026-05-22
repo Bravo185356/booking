@@ -59,25 +59,16 @@ function orderTitle(status: OrderStatus): string {
 <style scoped lang="scss">
 .card {
 	box-sizing: border-box;
-	width: 100%;
-	height: 100%;
+	position: absolute;
+	overflow: hidden;
 	padding: 4px 6px;
 	border-radius: 4px;
-	overflow: hidden;
 	font-size: 11px;
 	line-height: 1.3;
 	color: var(--color-event-card-text);
 	cursor: pointer;
 
 	&.hovered {
-		position: absolute;
-		left: 0;
-		top: 0;
-		z-index: 100;
-		width: max-content;
-		min-width: 100%;
-		height: auto;
-		min-height: 100%;
 		overflow: visible;
 		-webkit-backdrop-filter: blur(8px);
 		backdrop-filter: blur(8px);
