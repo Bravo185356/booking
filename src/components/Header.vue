@@ -7,8 +7,6 @@
 	</header>
 </template>
 
-
-
 <script setup lang="ts">
 import { useTheme } from '@/composables/useTheme'
 
@@ -51,7 +49,6 @@ const { isDark, toggleTheme } = useTheme()
 	transition: background 0.15s;
 
 	&:hover {
-
 		background: var(--color-button-hover-bg);
 	}
 }
