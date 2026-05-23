@@ -111,7 +111,7 @@ function getEventCardStyle(positioned: PositionedEvent, isHovered: boolean) {
 			minWidth: slotWidth,
 			height: 'auto',
 			minHeight: `${positioned.heightPercent}%`,
-			zIndex: 100,
+			zIndex: 29,
 		}
 	}
 
@@ -169,7 +169,7 @@ const {
 		display: flex;
 		position: sticky;
 		top: 0;
-		z-index: 20;
+		z-index: 30;
 		background: var(--color-bg-surface);
 	}
 
@@ -235,7 +235,7 @@ const {
 		flex-shrink: 0;
 		position: sticky;
 		left: 0;
-		z-index: 19;
+		z-index: 30;
 		background: var(--color-bg-surface);
 	}
 
@@ -279,7 +279,7 @@ const {
 		right: 0;
 		height: 1px;
 		background: var(--color-now-line);
-		z-index: 25;
+		z-index: 30;
 		pointer-events: none;
 	}
 }
